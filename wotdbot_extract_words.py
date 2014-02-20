@@ -5,7 +5,7 @@ Extract [Finnish] words from English Wiktionary.
 Download enwiktionary-20140118-pages-articles-multistream.xml.bz2 (484.5M) 
 or newer and unzip. Then run:
 
-python wotdbot_extract_words.py > finnish.txt
+python wotdbot_extract_words.py > data/finnish.txt
 
 For other languages, change "Finnish" in the if and "fi" in the regex.
 """

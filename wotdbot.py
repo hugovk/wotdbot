@@ -49,7 +49,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Pick a random word from a word list, open its Wiktionary page and tweet it", 
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-w', '--wordlist', default="finnish.txt",
+    parser.add_argument('-w', '--wordlist', default="data/finnish.txt",
         help="Filename of word list with a single word per line")
     parser.add_argument('-x', '--test', action='store_true',
         help="Test mode: don't tweet")
