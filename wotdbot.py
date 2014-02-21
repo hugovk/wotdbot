@@ -27,6 +27,11 @@ def random_word(filename):
     print word
     return word
 
+def open_url(url):
+    print url
+    if not args.no_web:
+        webbrowser.open(url, new=2) # 2 = open in a new tab, if possible
+
 def tweet_it(string):
     if len(string) <= 0:
         return
@@ -59,13 +64,16 @@ if __name__ == "__main__":
 
     # Can generate word lists with wotdbot_extract_words.py
     word = random_word(args.wordlist)
-    
-    url = "https://en.wiktionary.org/wiki/" + urllib.quote(word.encode('utf8')) + "#Finnish"
-    print url
-    if not args.no_web:
-        webbrowser.open(url, new=2) # 2 = open in a new tab, if possible
 
-    tweet = "Finnish word of the day: " + word + " " + url + " #Finnish #WOTD"
+    url_word = urllib.quote(word.encode('utf8'))
+
+    foreign_url = "https://fi.wiktionary.org/wiki/" + url_word + "#Suomi"
+    open_url(foreign_url)
+
+    native_url = "https://en.wiktionary.org/wiki/" + url_word + "#Finnish"
+    open_url(native_url)
+
+    tweet = "Finnish word of the day: " + word + " " + native_url + " " + foreign_url + " #Finnish #WOTD"
     print "Tweet this:\n", tweet
     tweet_it(tweet)
 
