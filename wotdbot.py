@@ -7,13 +7,17 @@ import io
 import random
 from twitter import * # https://github.com/sixohsix/twitter `pip install twitter`
 import urllib
+import yaml
 import webbrowser
 
-# Twitter: create and authorise an app with (read and) write access at https://dev.twitter.com/apps/new
-CONSUMER_KEY = "TODO_ADD_YOURS_HERE"
-CONSUMER_SECRET = "TODO_ADD_YOURS_HERE"
-OAUTH_TOKEN = "TODO_ADD_YOURS_HERE"
-OAUTH_TOKEN_SECRET = "TODO_ADD_YOURS_HERE"
+def load_yaml(filename):
+    f = open(filename)
+    data = yaml.safe_load(f)
+    f.close()
+    if not data.viewkeys() >= {'oauth_token', 'oauth_token_secret', 
+                              'consumer_key', 'consumer_secret'}:
+        sys.exit("Twitter credentials missing from YAML: " + filename)
+    return data
 
 def random_word(filename):
     words = []
@@ -32,13 +36,18 @@ def open_url(url):
     if not args.no_web:
         webbrowser.open(url, new=2) # 2 = open in a new tab, if possible
 
-def tweet_it(string):
+def tweet_it(string, credentials):
     if len(string) <= 0:
         return
 
-    t = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET,
-                           CONSUMER_KEY, CONSUMER_SECRET))
-
+    # Create and authorise an app with (read and) write access at:
+    # https://dev.twitter.com/apps/new
+    # Store credentials in YAML file. See data/onthisday_example.yaml
+    t = Twitter(auth=OAuth(credentials['oauth_token'], 
+                           credentials['oauth_token_secret'],
+                           credentials['consumer_key'], 
+                           credentials['consumer_secret']))
+ 
     print "TWEETING THIS:\n", string
 
     if args.test:
@@ -54,6 +63,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Pick a random word from a word list, open its Wiktionary page and tweet it", 
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-y', '--yaml', 
+        default='/Users/hugo/Dropbox/bin/data/wotdbot.yaml',
+        help="YAML file location containing Twitter keys and secrets")
     parser.add_argument('-w', '--wordlist', default="data/finnish.txt",
         help="Filename of word list with a single word per line")
     parser.add_argument('-x', '--test', action='store_true',
@@ -62,6 +74,8 @@ if __name__ == "__main__":
         help="Don't open a web browser to show the tweeted tweet")
     args = parser.parse_args()
 
+    twitter_credentials = load_yaml(args.yaml)
+    
     # Can generate word lists with wotdbot_extract_words.py
     word = random_word(args.wordlist)
 
@@ -75,6 +89,6 @@ if __name__ == "__main__":
 
     tweet = "Finnish word of the day: " + word + " " + native_url + " " + foreign_url + " #Finnish #WOTD"
     print "Tweet this:\n", tweet
-    tweet_it(tweet)
+    tweet_it(tweet, twitter_credentials)
 
 # End of file
