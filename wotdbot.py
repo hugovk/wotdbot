@@ -7,7 +7,7 @@ import io
 import random
 from twitter import * # https://github.com/sixohsix/twitter `pip install twitter`
 import urllib
-import yaml
+import yaml # `pip install pyyaml` 
 import webbrowser
 
 def load_yaml(filename):
