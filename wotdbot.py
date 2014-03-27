@@ -1,23 +1,26 @@
 #!/usr/bin/env python
 """
-Pick a random [Finnish] word from a word list, open its Wiktionary page and tweet it
+Pick a random [Finnish] word from a word list,
+open its Wiktionary page and tweet it
 """
 import argparse
 import io
 import random
-from twitter import * # https://github.com/sixohsix/twitter `pip install twitter`
+from twitter import *  # https://github.com/sixohsix/twitter
 import urllib
-import yaml # `pip install pyyaml` 
+import yaml  # `pip install pyyaml`
 import webbrowser
+
 
 def load_yaml(filename):
     f = open(filename)
     data = yaml.safe_load(f)
     f.close()
-    if not data.viewkeys() >= {'oauth_token', 'oauth_token_secret', 
-                              'consumer_key', 'consumer_secret'}:
+    if not data.viewkeys() >= {'oauth_token', 'oauth_token_secret',
+                               'consumer_key', 'consumer_secret'}:
         sys.exit("Twitter credentials missing from YAML: " + filename)
     return data
+
 
 def random_word(filename):
     words = []
@@ -31,10 +34,12 @@ def random_word(filename):
     print word
     return word
 
+
 def open_url(url):
     print url
     if not args.no_web:
-        webbrowser.open(url, new=2) # 2 = open in a new tab, if possible
+        webbrowser.open(url, new=2)  # 2 = open in a new tab, if possible
+
 
 def tweet_it(string, credentials):
     if len(string) <= 0:
@@ -43,39 +48,45 @@ def tweet_it(string, credentials):
     # Create and authorise an app with (read and) write access at:
     # https://dev.twitter.com/apps/new
     # Store credentials in YAML file. See data/onthisday_example.yaml
-    t = Twitter(auth=OAuth(credentials['oauth_token'], 
+    t = Twitter(auth=OAuth(credentials['oauth_token'],
                            credentials['oauth_token_secret'],
-                           credentials['consumer_key'], 
+                           credentials['consumer_key'],
                            credentials['consumer_secret']))
- 
+
     print "TWEETING THIS:\n", string
 
     if args.test:
         print "(Test mode, not actually tweeting)"
     else:
         result = t.statuses.update(status=string)
-        url = "http://twitter.com/" + result['user']['screen_name'] + "/status/" + result['id_str']
+        url = "http://twitter.com/" + result['user']['screen_name'] + \
+            "/status/" + result['id_str']
         print "Tweeted:\n" + url
-        if not args.no_web:
-            webbrowser.open(url, new=2) # 2 = open in a new tab, if possible
+        open_url(url)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Pick a random word from a word list, open its Wiktionary page and tweet it", 
+        description="Pick a random word from a word list, open its "
+        "Wiktionary page and tweet it",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-y', '--yaml', 
+    parser.add_argument(
+        '-y', '--yaml',
         default='/Users/hugo/Dropbox/bin/data/wotdbot.yaml',
         help="YAML file location containing Twitter keys and secrets")
-    parser.add_argument('-w', '--wordlist', default="data/finnish.txt",
+    parser.add_argument(
+        '-w', '--wordlist', default="data/finnish.txt",
         help="Filename of word list with a single word per line")
-    parser.add_argument('-x', '--test', action='store_true',
+    parser.add_argument(
+        '-x', '--test', action='store_true',
         help="Test mode: don't tweet")
-    parser.add_argument('-nw', '--no-web', action='store_true',
+    parser.add_argument(
+        '-nw', '--no-web', action='store_true',
         help="Don't open a web browser to show the tweeted tweet")
     args = parser.parse_args()
 
     twitter_credentials = load_yaml(args.yaml)
-    
+
     # Can generate word lists with wotdbot_extract_words.py
     word = random_word(args.wordlist)
 
@@ -87,7 +98,8 @@ if __name__ == "__main__":
     native_url = "https://en.wiktionary.org/wiki/" + url_word + "#Finnish"
     open_url(native_url)
 
-    tweet = "Finnish word of the day: " + word + " " + native_url + " " + foreign_url + " #Finnish #WOTD"
+    tweet = "Finnish word of the day: " + word + " " + native_url + " " + \
+        foreign_url + " #Finnish #WOTD"
     print "Tweet this:\n", tweet
     tweet_it(tweet, twitter_credentials)
 
