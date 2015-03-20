@@ -99,7 +99,7 @@ if __name__ == "__main__":
     open_url(native_url)
 
     tweet = "Finnish word of the day: " + word + " " + native_url + " " + \
-        foreign_url + " #Finnish #WOTD #Suomi"
+        foreign_url + " #Finnish #WOTD #Suomi #" + word
     print "Tweet this:\n", tweet
     tweet_it(tweet, twitter_credentials)
 
