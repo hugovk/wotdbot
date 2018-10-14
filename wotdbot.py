@@ -8,22 +8,16 @@ import io
 import random
 import sys
 import webbrowser
+from urllib.parse import quote
 
 import yaml  # pip install pyyaml
 from twitter import OAuth, Twitter  # pip install twitter
 
 
-try:
-    from urllib import quote  # Python 2.X
-except ImportError:
-    from urllib.parse import quote  # Python 3+
-
-
 def load_yaml(filename):
     with open(filename) as f:
         data = yaml.safe_load(f)
-    keys = data.viewkeys() if sys.version_info.major == 2 else data.keys()
-    if not keys >= {
+    if not data.keys() >= {
         "oauth_token",
         "oauth_token_secret",
         "consumer_key",
