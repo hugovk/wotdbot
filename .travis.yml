@@ -1,0 +1,29 @@
+language: python
+cache: pip
+sudo: false
+
+# Supported CPython versions:
+# https://en.wikipedia.org/wiki/CPython#Version_history
+matrix:
+  fast_finish: true
+  include:
+    - python: 3.7
+      dist: xenial
+      sudo: required
+    - python: 3.6
+    - python: 3.5
+    - python: 3.4
+
+install:
+ - pip install -U pip
+ - pip install -U flake8
+ - pip install -U -r requirements.txt
+ - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install -U black; fi
+
+script:
+ # Dry run
+ - python wotdbot.py --test --no-web --yaml data/wotdbot_example.yaml
+
+ # Static analysis
+ - flake8 --statistics --count
+ - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then black --check --diff .; fi

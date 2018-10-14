@@ -20,7 +20,7 @@ with open("enwiktionary-20140118-pages-articles-multistream.xml") as infile:
 
             # Match first text after t|fi in double squiggly brackets.
             # For example:
-            # * Finnish: {{t+|fi|muukalainen}}, {{t+|fi|ulkomaalainen}}, {{t|fi|vierasmaalainen}}
+            # * Finnish: {{t+|fi|muukalainen}}, {{t+|fi|ulkomaalainen}}
             # ->
             # muukalainen
 
@@ -41,6 +41,6 @@ with open("enwiktionary-20140118-pages-articles-multistream.xml") as infile:
 # print len(words)
 
 for word in words:
-    print word
+    print(word)
 
 # End of file
