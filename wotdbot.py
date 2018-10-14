@@ -7,11 +7,16 @@ import argparse
 import io
 import random
 import sys
-import urllib
 import webbrowser
 
 import yaml  # pip install pyyaml
 from twitter import OAuth, Twitter  # pip install twitter
+
+
+try:
+    from urllib import quote  # Python 2.X
+except ImportError:
+    from urllib.parse import quote  # Python 3+
 
 
 def load_yaml(filename):
@@ -95,7 +100,7 @@ if __name__ == "__main__":
     # Can generate word lists with wotdbot_extract_words.py
     word = random_word(args.wordlist)
 
-    url_word = urllib.quote(word.encode('utf8'))
+    url_word = quote(word.encode('utf8'))
 
     foreign_url = "https://fi.wiktionary.org/wiki/" + url_word + "#Suomi"
     open_url(foreign_url)

@@ -1,6 +1,9 @@
 wotdbot
 =======
 
+[![Build Status](https://travis-ci.org/hugovk/wotdbot.svg?branch=master)](https://travis-ci.org/hugovk/wotdbot)
+[![Python: 2.7, 3.4+](https://img.shields.io/badge/python-2.7,_3.4+-blue.svg)](https://www.python.org/downloads/)
+
 Word-of-the-day robot for tweeting a word of the day.
 
 First you need a list of Wiktionary words. There's a Finnish one in the data directory. It was made like this
