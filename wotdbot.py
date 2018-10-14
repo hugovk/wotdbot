@@ -6,11 +6,12 @@ open its Wiktionary page and tweet it
 import argparse
 import io
 import random
-from twitter import *  # pip install twitter
-import urllib
 import sys
-import yaml  # pip install pyyaml
+import urllib
 import webbrowser
+
+import yaml  # pip install pyyaml
+from twitter import OAuth, Twitter  # pip install twitter
 
 
 def load_yaml(filename):
@@ -30,16 +31,16 @@ def random_word(filename):
     with io.open(filename, encoding='utf-8') as infile:
         for line in infile:
             words.append(line.rstrip())
-    print "Loaded", len(words), "words"
+    print("Loaded", len(words), "words")
     randnum = random.randrange(len(words))
-    print "Random number:", randnum
+    print("Random number:", randnum)
     word = words[randnum]
-    print word
+    print(word)
     return word
 
 
 def open_url(url):
-    print url
+    print(url)
     if not args.no_web:
         webbrowser.open(url, new=2)  # 2 = open in a new tab, if possible
 
@@ -56,17 +57,17 @@ def tweet_it(string, credentials):
                            credentials['consumer_key'],
                            credentials['consumer_secret']))
 
-    print "TWEETING THIS:\n", string
+    print("TWEETING THIS:\n", string)
 
     if args.test:
-        print "(Test mode, not actually tweeting)"
+        print("(Test mode, not actually tweeting)")
     else:
         result = t.statuses.update(status=string)
         url = "http://twitter.com/" + result['user']['screen_name'] + \
             "/status/" + result['id_str']
-        print "Tweeted:\n" + url
+        print("Tweeted:\n" + url)
         if not args.no_web:
-            webbrowser.open(url, new=2) # 2 = open in a new tab, if possible
+            webbrowser.open(url, new=2)  # 2 = open in a new tab, if possible
 
 
 if __name__ == "__main__":
@@ -104,7 +105,7 @@ if __name__ == "__main__":
 
     tweet = "Finnish word of the day: " + word + " " + native_url + " " + \
         foreign_url + " #Finnish #WOTD #Suomi #" + word.replace(" ", "")
-    print "Tweet this:\n", tweet
+    print("Tweet this:\n", tweet)
     tweet_it(tweet, twitter_credentials)
 
 # End of file
