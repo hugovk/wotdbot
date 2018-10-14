@@ -6,18 +6,21 @@ open its Wiktionary page and tweet it
 import argparse
 import io
 import random
-from twitter import *  # https://github.com/sixohsix/twitter
+from twitter import *  # pip install twitter
 import urllib
-import yaml  # `pip install pyyaml`
+import sys
+import yaml  # pip install pyyaml
 import webbrowser
 
 
 def load_yaml(filename):
-    f = open(filename)
-    data = yaml.safe_load(f)
-    f.close()
-    if not data.viewkeys() >= {'oauth_token', 'oauth_token_secret',
-                               'consumer_key', 'consumer_secret'}:
+    with open(filename) as f:
+        data = yaml.safe_load(f)
+    keys = data.viewkeys() if sys.version_info.major == 2 else data.keys()
+    if not keys >= {
+        'oauth_token', 'oauth_token_secret',
+        'consumer_key', 'consumer_secret'
+    }:
         sys.exit("Twitter credentials missing from YAML: " + filename)
     return data
 
@@ -62,7 +65,8 @@ def tweet_it(string, credentials):
         url = "http://twitter.com/" + result['user']['screen_name'] + \
             "/status/" + result['id_str']
         print "Tweeted:\n" + url
-        open_url(url)
+        if not args.no_web:
+            webbrowser.open(url, new=2) # 2 = open in a new tab, if possible
 
 
 if __name__ == "__main__":
@@ -99,7 +103,7 @@ if __name__ == "__main__":
     open_url(native_url)
 
     tweet = "Finnish word of the day: " + word + " " + native_url + " " + \
-        foreign_url + " #Finnish #WOTD #Suomi #" + word
+        foreign_url + " #Finnish #WOTD #Suomi #" + word.replace(" ", "")
     print "Tweet this:\n", tweet
     tweet_it(tweet, twitter_credentials)
 
