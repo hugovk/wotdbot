@@ -4,7 +4,6 @@ Pick a random [Finnish] word from a word list,
 open its Wiktionary page and tweet it
 """
 import argparse
-import io
 import random
 import sys
 import webbrowser
@@ -29,7 +28,7 @@ def load_yaml(filename):
 
 def random_word(filename):
     words = []
-    with io.open(filename, encoding="utf-8") as infile:
+    with open(filename, encoding="utf-8") as infile:
         for line in infile:
             words.append(line.rstrip())
     print("Loaded", len(words), "words")
