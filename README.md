@@ -2,8 +2,8 @@ wotdbot
 =======
 
 [![Build Status](https://travis-ci.org/hugovk/wotdbot.svg?branch=master)](https://travis-ci.org/hugovk/wotdbot)
-[![Python: 3.4+](https://img.shields.io/badge/python-3.4+-blue.svg)](https://www.python.org/downloads/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+[![Python: 3.5+](https://img.shields.io/badge/python-3.4+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 Word-of-the-day robot for tweeting a word of the day.
 
