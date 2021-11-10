@@ -3,7 +3,7 @@ wotdbot
 
 [![GitHub Actions status](https://github.com/hugovk/wotdbot/workflows/Test/badge.svg)](https://github.com/hugovk/wotdbot/actions)
 [![Python: 3.6+](https://img.shields.io/badge/Python-3.6+-blue.svg)](https://www.python.org/downloads/)
-[![Code style: Black](https://img.shields.io/badge/code%20style-Black-000000.svg)](https://github.com/python/black)
+[![Code style: Black](https://img.shields.io/badge/code%20style-Black-000000.svg)](https://github.com/psf/black)
 
 Word-of-the-day robot for tweeting a word of the day.
 
